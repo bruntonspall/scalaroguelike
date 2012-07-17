@@ -1,17 +1,19 @@
 package uk.co.bruntonspall.roguelike.servlets
 
 import org.scalatra.ScalatraServlet
+import org.scalatra.ApiFormats
 import uk.co.bruntonspall.roguelike.scalatra.TwirlSupport
-import uk.co.bruntonspall.roguelike.model.User
+import uk.co.bruntonspall.roguelike.model.Screen
 import uk.co.bruntonspall.roguelike.util.Ofy
 
-class DispatcherServlet extends ScalatraServlet with TwirlSupport {
+class DispatcherServlet extends ScalatraServlet with TwirlSupport with ApiFormats {
 
   get("/") {
-    val userToSave = new User("test@test.com", "password", "Testy Testerson")
-    Ofy.save.entity(userToSave).now()
-    val user = Ofy.load.`type`(classOf[User]).id("test@test.com").get
-    html.welcome.render(user)
+    val screen = Screen(80, 24).write(1, 1, "Welcome to Roguelike")
+    format match {
+      case "html" => html.welcome.render(screen)
+      case _ => screen.rows.map { y => screen.columns.map { x => screen.charAt(x, y) }.mkString }.mkString("\n")
+    }
   }
 
 }

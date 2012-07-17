@@ -1,10 +1,38 @@
-@(user:User)
+@(screen:Screen)
 <!DOCTYPE html>
 <html lang="en">
 	<head>
 		<title>Welcome</title>
+		<style type="text/css">
+		.tile {
+			width: 11px;
+			height: 15px;
+			margin: 0;
+			border: 0;
+			border-right: solid 1px #000;
+			border-bottom: solid 1px #000;
+			padding: 0;
+			background-color: #999;
+			display: block;
+			float: left;
+			text-align: center;
+			font-family: Courier, fixed;
+			font-size: 13px;
+		}
+		.row {
+			clear: both;
+		}
+		</style>
 	</head>
 	<body>
-		<h1>Welcome @user.name</h1>
+		<h1>Welcome</h1>
+		@screen.rows.map { y =>
+			<div class="row">
+			@screen.columns.map { x =>
+				<span class="tile">@screen.charAt(x,y)</span>
+			}
+			</div>
+		}
+
 	</body>
 </html>
